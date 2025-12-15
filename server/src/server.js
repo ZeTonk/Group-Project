@@ -1,10 +1,24 @@
 // src/server.js
 import express from "express";
 import "dotenv/config";
-import { createPlayer, getAllPlayers, getPlayer } from "./services/playerService.js";
+import {
+  createPlayer,
+  getAllPlayers,
+  getPlayer,
+  updatePlayerStats,
+  getLeaderBoard,
+  getPlayerByName
+} from "./services/playerService.js";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || "development";
+
+//Middleware
+app.use(cors({
+origin:NODE_ENV==='production'
+?process.env.CLIENT_URL
+}))
 app.use(express.json());
 
 app.get("/", (req, res) => {
