@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Enviroment
+.env
+.env.local
+
+# DB
+*.db
+*.db-journal
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
