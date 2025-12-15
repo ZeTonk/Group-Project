@@ -16,27 +16,81 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 //Middleware
 app.use(cors({
-origin:NODE_ENV==='production'
-?process.env.CLIENT_URL
-}))
+  origin: NODE_ENV === 'production'
+    ? process.env.CLIENT_URL
+    : 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200).send("Welcome Home!");
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
 });
-app.get("/about", (req, res) => {
-  res.status(200).send("My name is Ryan");
+app.get("/", (req, res) => {
+  req.json([
+    message: "Tic-Tac-Toe API",
+    version: "1.0.0",
+    status: "running"
+  ]);
 });
 
-app.get("/error", (req, res) => {
-  throw new Error("error from /error route");
+/**
+ *POST/api/players
+ * Createanewplayer
+ */
+ app.post("/api/players", (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: "Name is required"
+      })
+    }
+    if (!name || !name.trim()) {
+      return res.status(400).json({
+        error: "Name is required",
+      });
+    }
+    const player = createPlayer(name.trim());
+    if (player.error) {
+      return res.status(player.status).json({
+        success: false,
+        error: player.error
+      });
+    }
+    res.status(201).json({
+      success: true,
+      player
+    });
+  }
+  catch (error) {
+    console.error("Error creating plaer:", error);
+    res.status(500).json({
+      failed: false,
+      error: error.message
+    });
+  }
 });
 app.get("/api/players", (req, res) => {
-  // cache the array of players form a function/service
-  const players = getAllPlayers();
-  // respond with a success key and the players
-  res.json({ success: true, players });
-})
+  try {
+    const player = getAllPlayers();
+    res.json({
+      success: true,
+      players,
+      count: players.length
+    });
+  } catch (error) {
+    console.error("Error getting players:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to get players"
+    });
+  }
+});
 app.get("/api/players/:id", (req, res) => {
   const player = getPlayer(req.params.id);
   if (player.error) {
@@ -45,30 +99,7 @@ app.get("/api/players/:id", (req, res) => {
   res.status(200).json({ success: true, player });
 })
 //POST routs
-app.post("/api/players", (req, res) => {
-  try {
-    const { name } = req.body;
-    const trimmedName = name?.trim()
-    if (!trimmedName) {
-      return res.status(400).json({
-        error: "Name is required"
-      });
-    }
-    // if (!name || !name.trim()) {
-    //   return res.status(400).json({
-    //     error: "Name is required",
-    //   });
-    // }
-    const player = createPlayer(trimmedName, 32);
-    if (player.error) {
-      return res.status(player.status).json({ error: player.error });
-    }
-    res.status(201).json({ success: true, player });
-  }
-  catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
 
 
 // Fall Error Handlers

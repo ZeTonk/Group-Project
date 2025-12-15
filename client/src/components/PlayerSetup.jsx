@@ -55,6 +55,44 @@ export default function PlayerSetup({ onPlayerSet }) {
 
     return (
         <div className="player-setup">
-div
+            <div className="player-setup-card">
+                <h2>Welcome to Tic-tac-toe!</h2>
+                <p className="subtitle">Enter your name to start playing</p>
+
+                {error && (
+                    <div className="error-messages">
+                        {error}
+                    </div>
+                )}
+        <form onSubmit={handleSubmit} className="player-form">
+          <div className="form-group">
+            <label htmlFor="playerName">Player Name</label>
+            <input
+              id="playerName"
+              type="text"
+              placeholder="Enter your name..."
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={loading}
+              className="player-input"
+              autoFocus
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || !name.trim()}
+            className="btn btn-primary"
+          >
+            {loading ? 'Creating Player...' : 'Start Game'}
+          </button>
+        </form>
+
+        <div className="help-text">
+          <p>🎮 Play against yourself or a friend!</p>
+          <p>📊 Your wins and losses will be tracked</p>
         </div>
-    )
+            </div>
+        </div>
+    );
+};
