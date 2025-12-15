@@ -1,0 +1,16 @@
+# test-api.http
+####variables
+@playerId = b66757d0-126f-4df5-bb03-8cb755f94ae2
+### Create Player
+POST http://localhost:3000/api/players
+Content-Type: application/json 
+
+{
+    "name": "Fish"
+}
+
+### GET ALL PLAYERS
+GET http://localhost:3000/api/players
+
+### GET PLAYER BY ID
+GET http://localhost:3000/api/players/{{playerId}}
