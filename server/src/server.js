@@ -28,14 +28,17 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);
   next();
 });
+
+// Healthcheck
 app.get("/", (req, res) => {
-  req.json([
+  req.json({
     message: "Tic-Tac-Toe API",
     version: "1.0.0",
     status: "running"
-  ]);
+  });
 });
 
+// POST routes
 /**
  *POST/api/players
  * Createanewplayer
@@ -77,7 +80,7 @@ app.get("/", (req, res) => {
 });
 app.get("/api/players", (req, res) => {
   try {
-    const player = getAllPlayers();
+    const players = getAllPlayers();
     res.json({
       success: true,
       players,
@@ -91,22 +94,81 @@ app.get("/api/players", (req, res) => {
     });
   }
 });
+
 app.get("/api/players/:id", (req, res) => {
   const player = getPlayer(req.params.id);
   if (player.error) {
     return res.status(player.status).json({ error: player.error });
   }
   res.status(200).json({ success: true, player });
-})
-//POST routs
+});
 
+/**
+ * NEW POST/api/players/:id/stats
+ * Update player stats after game
+ */
+app.post("/api/player/:id/stats", (req, res) => {
+  try{
+    const { result } = req.body;
+    if(!result || !['win','loss','tie'].includes(result)){
+      returnres.status(400).json({
+        success: false,
+        error:player.erro
+      });
+    }
+
+    constplayer = updatePlayerStats(req.params.id, result);
+
+    if (player.error) {
+      return res.status(player.status).json({
+        success: false,
+        error: player.error
+      });
+    }
+    res.json({
+      success: true,
+      player,
+      message: `Player stats updated: ${result}`
+    });
+  } catch (error) {
+    console.error("Error updating stats", error);
+    res.status(500).json({
+      success:false,
+      error:"Failed to update player stats"
+    });
+  }
+});
+
+/**
+ * New: GET /api/leaderboard
+ * Get top players by wins
+ */
+app.get("/api/leaderboard", (req, res) => {
+  try{
+    const limit = parseInt(req.query.limit) || 10;
+    const leaderboard = getLeaderboard(limit);
+    res.json({
+      success: true,
+      leaderboard,
+      count: leaderboard.length
+    })
+  } catch(error){
+    console.error("Error getting leaderboard:", error);
+    res.status(500).json({
+      success:false,
+      error:"Failed to get leaderboard"
+    });
+  }
+});
 
 
 // Fall Error Handlers
 app.use((req, res) => {
-  res.status(404).send("The page you're looking for does not exist");
+  res.status(404).json({
+    success: false,
+    error: "Route not found"
+  });
 });
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -119,3 +181,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on ${PORT}`);
 });
+

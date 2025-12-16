@@ -1,8 +1,8 @@
 // client/src/components/Game/Game.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Board from "./Board";
 import GameStatus from "./GameStatus";
-// import PlayerSetup from "../PlayerSetup";
+import PlayerSetup from "../PlayerSetup";
 import {
   checkForWin,
   isValidMove,
@@ -13,7 +13,8 @@ import {
 
 export default function Game() {
   const [gameState, setGameState] = useState(createInitialGameState());
-
+  const[player, setPlayer] = useState(null);
+  const hasUpdatedStatsref = useRef(false);
   const { board, currentPlayer, gameOver, winner, winningCombo } = gameState;
 
   const handleCellClick = (position) => {
@@ -43,8 +44,38 @@ export default function Game() {
   /* Reset the Game */
   const handleReset = () => {
     setGameState(createInitialGameState());
+    hasUpdatedStatsRef.current = false;
   };
+  useEffect(() =>{
+    //early return if conditions not met
+  if(!gameover || !player || hasUpdatedStatsref.current){
+    return;
+  }
 
+  constupdateStats=async()=>{
+    hasUpdatedStatsRef.current=true;
+
+    try{
+      letresult;
+      if(winner === "DRAW"){
+        result === 'tie';
+      }else if(winner === 'X'){
+result===
+
+    "win";        }else{
+
+      result === "loss";}
+}
+   }
+
+      const responce = await fetch(`http://localhost:3000/api/players/${player.id}/stats`, {
+
+      })     }
+
+    }
+  }
+  }
+  });
   return (
     <>
       <div className="game-container">
