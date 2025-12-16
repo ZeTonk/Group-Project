@@ -56,7 +56,7 @@ export default function Game() {
     hasUpdatedStatsRef.current=true;
 
     try{
-      letresult;
+      let result;
       if(winner === "DRAW"){
         result === 'tie';
       }else if(winner === 'X'){
@@ -69,13 +69,25 @@ result===
    }
 
       const responce = await fetch(`http://localhost:3000/api/players/${player.id}/stats`, {
+        method: 'POST',
+        headers: {'Content-Type', 'applictation/json'},
+        body: JSON.stringify({result})})     }
+;
 
-      })     }
+if
+  if (response.ok) {
+
+      const data = await response.join();
+        setPlayer(data.player);
+        console.log('Stats updated:', data.player);}}    }
 
     }
-  }
-  }
+catch{
+
+
+  });  }
   });
+  eturn ;
   return (
     <>
       <div className="game-container">

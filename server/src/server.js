@@ -161,6 +161,34 @@ app.get("/api/leaderboard", (req, res) => {
   }
 });
 
+/**
+ * NEW GET /api/players/name/:name
+ * Get player by name
+ */
+app.get("/api/players/name/:name", (req, res) => {
+  try {
+    const player = getPlayerByName(req.params.name);
+
+    if (player.error) {
+      return res.status(player.status).json({
+        success: false,
+        error: player.error
+      });
+    }
+
+    res.json({
+      success: true,
+      player
+    });
+  } catch (error) {
+    console.error("Error getting player by name:", error);
+    res.status(500).json({
+      success:
+lse,
+              error: "Failed to get player"    });
+
+  }
+});
 
 // Fall Error Handlers
 app.use((req, res) => {
@@ -174,11 +202,18 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     success: false,
     error: "Internal Server Error! ERror!",
-    msg: err.message,
+    message: NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is listening on ${PORT}`);
+  console.log(`\nServer is listening on ${PORT}`);
+  console.log(`CORS enabled for http://localhost:5173`);
+  console.log(`\nAPI Endpoints:`);
+  console.log(`  POST   /api/players`);
+  console.log(`  Get    /api/players`);
+  console.log(`  GET    /api/players/:id`);
+  console.log(`  GET    /api/players/name/:name`);
+c
 });
 

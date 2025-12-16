@@ -47,12 +47,6 @@ body {
   color: #1976d2;
 }
 
-.game-status.game-over {
-}
-
-.game-status.draw {
-}
-
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
