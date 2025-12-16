@@ -17,9 +17,7 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 
 //Middleware
 app.use(cors({
-  origin: NODE_ENV === 'production'
-    ? process.env.CLIENT_URL
-    : 'http://localhost:5173',
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json());
@@ -53,11 +51,6 @@ app.get("/", (req, res) => {
         success: false,
         error: "Name is required"
       })
-    }
-    if (!name || !name.trim()) {
-      return res.status(400).json({
-        error: "Name is required",
-      });
     }
     const player = createPlayer(name.trim());
     if (player.error) {
