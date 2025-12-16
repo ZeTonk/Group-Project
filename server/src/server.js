@@ -1,12 +1,13 @@
 // src/server.js
 import express from "express";
+import cors from "cors";
 import "dotenv/config";
 import {
   createPlayer,
   getAllPlayers,
   getPlayer,
   updatePlayerStats,
-  getLeaderBoard,
+  getLeaderboard,
   getPlayerByName
 } from "./services/playerService.js";
 

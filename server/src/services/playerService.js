@@ -8,9 +8,9 @@ export function createPlayer(name) {
 
     try {
         db.prepare(`
-        INSERT INTO players (id, name, wins, losses, ties, total_games, created_at) 
+        INSERT INTO players (id, name, wins, losses, ties, total_games, created_at)
         VALUES (?, ?, 0, 0, 0, 0, ?)
-            `,).run(playerId, name, age, created_at);
+            `,).run(playerId, name, created_at);
         return {
             id: playerId,
             name: name,
@@ -31,7 +31,7 @@ export function createPlayer(name) {
 }
 
 export function getPlayer(playerId) {
-    const player = db.prepare(`SELECT id, names, wins, losses, ties, total_games, created_at 
+    const player = db.prepare(`SELECT id, names, wins, losses, ties, total_games, created_at
         FROM players
         WHERE id = ? `).get(playerId);
     if (!player) {
@@ -49,7 +49,7 @@ export function getPlayer(playerId) {
 }
 
 export function getAllPlayers() {
-    const players = db.prepare(`SELECT id name, wins, losses, ties, total_games, created_at 
+    const players = db.prepare(`SELECT id name, wins, losses, ties, total_games, created_at
     FROM players
     ORDER BY wins DESC, name ASC`).all();
 
@@ -137,7 +137,7 @@ export function getPlayerByName(name) {
         FROM players
         WHERE name = ?
     `).get(name);
-    
+
     if (!player) {
         return { error: 'Player not found', status: 404 };
     }
