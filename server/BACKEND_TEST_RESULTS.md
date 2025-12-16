@@ -1,14 +1,14 @@
 # Backend Testing Results - Day 1
 
-## Test Date: [Date]
-## Tester: [Your Name]
+## Test Date: [12/16/2025]
+## Tester: [Andrew]
 
 ## Feature 1: Player Creation
-- [x] Can create player with unique name
-- [x] Returns player with all stats initialized to 0
-- [x] Rejects duplicate player names
-- [x] Rejects empty names
-- [x] Returns proper error messages
+- [✓] Can create player with unique name
+- [v] Returns player with all stats initialized to 0
+- [✓] Rejects duplicate player names
+- [✓] Rejects empty names
+- [✓] Returns proper error messages
 
 ## Feature 2: Stats Tracking
 - [x] Can record wins

@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 
 // Healthcheck
 app.get("/", (req, res) => {
-  req.json({
+  res.json({
     message: "Tic-Tac-Toe API",
     version: "1.0.0",
     status: "running"
@@ -191,9 +191,6 @@ app.get("/api/players/name/:name", (req, res) => {
 });
 
 
-
-
-
 // Fall Error Handlers
 app.use((req, res) => {
   res.status(404).json({
@@ -215,7 +212,7 @@ app.listen(PORT, () => {
   console.log(`CORS enabled for http://localhost:5173`);
   console.log(`\nAPI Endpoints:`);
   console.log(`  POST   /api/players`);
-  console.log(`  Get    /api/players`);
+  console.log(`  GET    /api/players`);
   console.log(`  GET    /api/players/:id`);
   console.log(`  GET    /api/players/name/:name`);
   console.log(`  POST   /api/players/:id/stats`);
