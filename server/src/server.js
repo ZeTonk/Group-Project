@@ -183,12 +183,15 @@ app.get("/api/players/name/:name", (req, res) => {
   } catch (error) {
     console.error("Error getting player by name:", error);
     res.status(500).json({
-      success:
-lse,
-              error: "Failed to get player"    });
-
+      success: false,
+      error: "Failed to get player"
+    })
   }
 });
+
+
+
+
 
 // Fall Error Handlers
 app.use((req, res) => {
@@ -214,6 +217,7 @@ app.listen(PORT, () => {
   console.log(`  Get    /api/players`);
   console.log(`  GET    /api/players/:id`);
   console.log(`  GET    /api/players/name/:name`);
-c
+  console.log(`  POST   /api/players/:id/stats`);
+  console.log(`  GET    /api/leaderboard\n`);
 });
 
