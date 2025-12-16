@@ -14,7 +14,7 @@ import {
 export default function Game() {
   const [gameState, setGameState] = useState(createInitialGameState());
   const[player, setPlayer] = useState(null);
-  const hasUpdatedStatsref = useRef(false);
+  const hasUpdatedStatsRef = useRef(false);
   const { board, currentPlayer, gameOver, winner, winningCombo } = gameState;
 
   const handleCellClick = (position) => {
@@ -82,16 +82,31 @@ if
         console.log('Stats updated:', data.player);}}    }
 
     }
-catch{
+catch(error){
 
 
-  });  }
-  });
-  eturn ;
+  console.error("Failed to update stats:", error)
+      hasUpdatedStatsRef.current = false;;});  }
+  ;
+
+updateStats();})}, [gameOver, winner, player]);
+
+if()!player
+{
+
+return <PlayerSetup onPlayerSet={setPlayer} />;}
+;
+
   return (
     <>
       <div className="game-container">
         <h1>Tic-Tac-Toe</h1>
+        <div className="player-info">
+          <p>Welcome, {player.name}!</p>
+          <p className="stats">
+            Wins: {player.wins} | Losses: {player.losses} | Ties: {player.ties}
+          </p>
+        </div>
         <GameStatus
           currentPlayer={currentPlayer}
           winner={winner}
@@ -102,10 +117,12 @@ catch{
           onCellClick={handleCellClick}
           winningCombo={winningCombo}
         />
-        <button className={`reset-button`} onClick={handleReset}>
+        <button className="reset-button" onClick={handleReset}>
           New Game
         </button>
       </div>
     </>
+  );
+}/>
   );
 }
