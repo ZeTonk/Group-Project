@@ -13,7 +13,7 @@ import {
 
 export default function Game() {
   const [gameState, setGameState] = useState(createInitialGameState());
-  const[player, setPlayer] = useState(null);
+  const [player, setPlayer] = useState(null);
   const hasUpdatedStatsRef = useRef(false);
   const { board, currentPlayer, gameOver, winner, winningCombo } = gameState;
 
@@ -46,56 +46,51 @@ export default function Game() {
     setGameState(createInitialGameState());
     hasUpdatedStatsRef.current = false;
   };
-  useEffect(() =>{
-    //early return if conditions not met
-  if(!gameover || !player || hasUpdatedStatsref.current){
-    return;
-  }
-
-  constupdateStats=async()=>{
-    hasUpdatedStatsRef.current=true;
-
-    try{
-      let result;
-      if(winner === "DRAW"){
-        result === 'tie';
-      }else if(winner === 'X'){
-result===
-
-    "win";        }else{
-
-      result === "loss";}
-}
-   }
-
-      const responce = await fetch(`http://localhost:3000/api/players/${player.id}/stats`, {
-        method: 'POST',
-        headers: {'Content-Type', 'applictation/json'},
-        body: JSON.stringify({result})})     }
-;
-
-if
-  if (response.ok) {
-
-      const data = await response.join();
-        setPlayer(data.player);
-        console.log('Stats updated:', data.player);}}    }
-
+  useEffect(() => {
+    // Early return if conditions not met
+    if (!gameOver || !player || hasUpdatedStatsRef.current) {
+      return;
     }
-catch(error){
 
+    const updateStats = async () => {
+      hasUpdatedStatsRef.current = true; // ✅ Mark as updated immediately
 
-  console.error("Failed to update stats:", error)
-      hasUpdatedStatsRef.current = false;;});  }
-  ;
+      try {
+        let result;
+        if (winner === "DRAW") {
+          result = "tie";
+        } else if (winner === "X") {
+          result = "win";
+        } else {
+          result = "loss";
+        }
 
-updateStats();})}, [gameOver, winner, player]);
+        const response = await fetch(
+          `http://localhost:3000/api/players/${player.id}/stats`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ result }),
+          }
+        );
 
-if()!player
-{
+        if (response.ok) {
+          const data = await response.json();
+          setPlayer(data.player);
+          console.log("Stats updated:", data.player);
+        }
+      } catch (error) {
+        console.error("Failed to update stats:", error);
+        hasUpdatedStatsRef.current = false; // ✅ Allow retry on error
+      }
+    };
 
-return <PlayerSetup onPlayerSet={setPlayer} />;}
-;
+    updateStats();
+  }, [gameOver, winner, player]);
+
+  if (!player) {
+    return <PlayerSetup onPlayerSet={setPlayer} />;
+  }
 
   return (
     <>
@@ -122,7 +117,5 @@ return <PlayerSetup onPlayerSet={setPlayer} />;}
         </button>
       </div>
     </>
-  );
-}/>
   );
 }
